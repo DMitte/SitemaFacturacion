@@ -1,0 +1,29 @@
+﻿@page "/categoria/nuevo"
+@inject NavigationManager navigationMag
+
+<PageTitle>Crear Categoria</PageTitle>
+
+<h3>Crear Catergorias</h3>
+
+<EditForm Model="@categoria">
+	
+	<div class="mb-3">
+		<label class="form-label">Nombre</label>
+		<input type="text" class="form-control" @bind="categoria.CatNombre">
+	</div>
+	<div class="mb-3">
+		<label class="form-label">Descripcion</label>
+		<input type="text" class="form-control" @bind="categoria.CatDescripcion">
+	</div>
+	<button type="submit" class="btn btn-primary" @onclick="SaveCategoria">Guardar</button>
+</EditForm>
+
+@code {
+	Categorium categoria = new Categorium();
+	ICategoria categoriaSvc = new CategoriaService();
+
+	protected async Task SaveCategoria() {
+		await categoriaSvc.CreateCategoria(categoria);
+		navigationMag.NavigateTo("/categorias");
+	}
+}

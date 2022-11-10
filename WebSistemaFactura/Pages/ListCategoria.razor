@@ -1,0 +1,46 @@
+﻿@page "/categorias"
+@inject NavigationManager naviMag
+
+<h3>Lista de Categorias</h3>
+
+@if (categorias == null)
+{
+	<span>Cargando..</span>
+}
+else
+{
+	<table class="table table-dark table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Codigo</th>
+				<th scope="col">Nombre</th>
+				<th scope="col">Descripcion</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var categoria in categorias)
+			{
+				<tr>
+					<th scope="row">@categoria.CatCodigo</th>
+					<td>@categoria.CatNombre</td>
+					<td>@categoria.CatDescripcion</td>
+					<td>
+						<button class="btn btn-danger" @onclick="() => DeleteCatogria(categoria.CatCodigo)">Elominar</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+@code {
+	private List<Categorium> categorias;
+	ICategoria categoriaSvc = new CategoriaService();
+
+	protected override async Task OnInitializedAsync() => categorias = await categoriaSvc.GetAllCategorias();
+
+	protected async Task DeleteCatogria(int id)
+	{
+		await categoriaSvc.DeleteCategoria(id);		
+	}
+
+}
